@@ -169,7 +169,7 @@ class Grievance(models.Model):
 
 
 class ImportantDatesMap(models.Model):
-    i_grievance = models.ForeignKey(Grievance, models.DO_NOTHING, db_column='I_Grievance_ID')  # Field name made lowercase.
+    i_grievance_id = models.ForeignKey(Grievance, models.DO_NOTHING, db_column='I_Grievance_ID')  # Field name made lowercase.
     important_dates = models.CharField(db_column='Important_dates', unique=True, max_length=15)  # Field name made lowercase.
 
     class Meta:
@@ -204,7 +204,7 @@ class People(models.Model):
 
 
 class PhoneNumberMap(models.Model):
-    p_department = models.ForeignKey(Department, models.DO_NOTHING, db_column='P_Department_ID')  # Field name made lowercase.
+    p_department_id = models.ForeignKey(Department, models.DO_NOTHING, db_column='P_Department_ID')  # Field name made lowercase.
     phone_number = models.CharField(db_column='Phone_number', unique=True, max_length=15)  # Field name made lowercase.
 
     class Meta:
@@ -235,7 +235,7 @@ class SignIn(models.Model):
     email_id = models.CharField(db_column='Email_ID', primary_key=True, max_length=30)  # Field name made lowercase.
     password = models.CharField(db_column='Password', max_length=20)  # Field name made lowercase.
     aadhaar_number = models.ForeignKey(People, models.DO_NOTHING, db_column='Aadhaar_number', blank=True, null=True)  # Field name made lowercase.
-    department_id = models.ForeignKey(Department, models.DO_NOTHING, db_column='Department_ID', blank=True, null=True)  # Field name made lowercase.
+    department = models.ForeignKey(Department, models.DO_NOTHING, db_column='Department_ID', blank=True, null=True)  # Field name made lowercase.
 
     class Meta:
         managed = False
