@@ -97,8 +97,8 @@ class AuthUserUserPermissions(models.Model):
 class Department(models.Model):
     department_id = models.CharField(db_column='Department_ID', primary_key=True, max_length=12)  # Field name made lowercase.
     department_name = models.CharField(db_column='Department_name', max_length=30)  # Field name made lowercase.
-    bio = models.CharField(db_column='Bio', max_length=100, blank=True, null=True)  # Field name made lowercase.
-    photo = models.TextField(db_column='Photo')  # Field name made lowercase.
+    bio = models.CharField(db_column='Bio', max_length=100)  # Field name made lowercase.
+    photo = models.TextField(db_column='Photo',  blank=True, null=True)  # Field name made lowercase.
     dep_street = models.CharField(db_column='Dep_street', max_length=45)  # Field name made lowercase.
     d_zip_code = models.ForeignKey(Address, models.DO_NOTHING, db_column='D_Zip_code')  # Field name made lowercase.
     no_of_reports = models.IntegerField(db_column='No_of_reports')  # Field name made lowercase.
@@ -161,7 +161,7 @@ class Grievance(models.Model):
     current_status = models.CharField(db_column='Current_status', max_length=20)  # Field name made lowercase.
     arg = models.ForeignKey(AdministrativeReforms, models.DO_NOTHING, db_column='ARG_ID', blank=True, null=True)  # Field name made lowercase.
     pg = models.ForeignKey('Public', models.DO_NOTHING, db_column='PG_ID', blank=True, null=True)  # Field name made lowercase.
-    g_department = models.ForeignKey(Department, models.DO_NOTHING, db_column='G_Department_ID', blank=True, null=True)  # Field name made lowercase.
+    g_department_id = models.ForeignKey(Department, models.DO_NOTHING, db_column='G_Department_ID', blank=True, null=True)  # Field name made lowercase.
 
     class Meta:
         managed = False
@@ -170,7 +170,7 @@ class Grievance(models.Model):
 
 class ImportantDatesMap(models.Model):
     i_grievance_id = models.ForeignKey(Grievance, models.DO_NOTHING, db_column='I_Grievance_ID')  # Field name made lowercase.
-    important_dates = models.CharField(db_column='Important_dates', unique=True, max_length=15)  # Field name made lowercase.
+    important_dates = models.CharField(db_column='Important_dates', max_length=15)  # Field name made lowercase.
 
     class Meta:
         managed = False
@@ -196,7 +196,8 @@ class People(models.Model):
     job = models.CharField(db_column='Job', max_length=45)  # Field name made lowercase.
     door_no = models.CharField(db_column='Door_no', max_length=10)  # Field name made lowercase.
     street = models.CharField(db_column='Street', max_length=45)  # Field name made lowercase.
-    p_zip_code = models.ForeignKey(Address, models.DO_NOTHING, db_column='P_Zip_code')  # Field name made lowercase.
+    zip_code = models.ForeignKey(Address, models.DO_NOTHING, db_column='P_Zip_code')  # Field name made lowercase.
+    profile = models.TextField(blank=True, null=True)
 
     class Meta:
         managed = False
@@ -235,19 +236,17 @@ class SignIn(models.Model):
     email_id = models.CharField(db_column='Email_ID', primary_key=True, max_length=30)  # Field name made lowercase.
     password = models.CharField(db_column='Password', max_length=20)  # Field name made lowercase.
     aadhaar_number = models.ForeignKey(People, models.DO_NOTHING, db_column='Aadhaar_number', blank=True, null=True)  # Field name made lowercase.
-    department = models.ForeignKey(Department, models.DO_NOTHING, db_column='Department_ID', blank=True, null=True)  # Field name made lowercase.
+    department_id = models.ForeignKey(Department, models.DO_NOTHING, db_column='Department_ID', blank=True, null=True)  # Field name made lowercase.
 
     class Meta:
         managed = False
         db_table = 'sign_in'
-
-
 class VotesList(models.Model):
-    g_aadhaar_number = models.OneToOneField(People, models.DO_NOTHING, db_column='G_Aadhaar_number', primary_key=True)  # Field name made lowercase.
-    a_grievance = models.ForeignKey(Grievance, models.DO_NOTHING, db_column='A_Grievance_ID')  # Field name made lowercase.
+    g_aadhaar_number = models.ForeignKey(People, models.DO_NOTHING, db_column='G_Aadhaar_number')  # Field name made lowercase.
+    a_grievance_id = models.ForeignKey(Grievance, models.DO_NOTHING, db_column='A_Grievance_ID')  # Field name made lowercase.
     type = models.CharField(db_column='Type', max_length=10)  # Field name made lowercase.
 
     class Meta:
         managed = False
         db_table = 'votes_list'
-        unique_together = (('g_aadhaar_number', 'a_grievance'),)
+
